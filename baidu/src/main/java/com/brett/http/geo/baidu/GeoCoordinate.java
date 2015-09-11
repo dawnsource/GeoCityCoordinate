@@ -89,7 +89,8 @@ public class GeoCoordinate {
 
     // ja['0100']='北京';
     Pattern patternProvince = Pattern.compile("ja\\['\\d{2}00']='(.{2,9})';");
-    Pattern patternCity = Pattern.compile("ja\\['\\d{2}[1-9]{2}']='(.{2,9})';");
+    //  ja['2007']='佛山'; 尾数不是连续的0
+    Pattern patternCity = Pattern.compile("ja\\['\\d{2}(0[1-9]|[1-9]0)']='(.{2,9})';");
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(GeoCoordinate.class.getClassLoader().getResourceAsStream("city_arr.js")));
     String str =reader.readLine();
@@ -117,7 +118,8 @@ public class GeoCoordinate {
       matcherCity = patternCity.matcher(str);
       if(provinceName!=null && !"".equals(provinceName) && matcherCity.find()) {
 
-        String cityName = matcherCity.group(1);
+        //String cityName = matcherCity.group(1);
+        String cityName = matcherCity.group(2);
 
 //        JsonNode root = GeoRequestHttpClient.geoAcquire(city);
 
